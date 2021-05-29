@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
+use App\Mail\ReservationMail;
+use Illuminate\Support\Facades\Mail;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,3 +29,7 @@ Route::get('/rooms/{roomType?}',App\Http\Controllers\ShowRoomsController::class)
 
 Route::resource('bookings',App\Http\Controllers\BookingController::class);
 Route::resource('room_types',App\Http\Controllers\RoomTypeController::class);
+Route::get('/email',function(){
+    // Mail::to('atitmsingh1979@gmail.com')->send(new ReservationMail());
+    return new ReservationMail();
+});

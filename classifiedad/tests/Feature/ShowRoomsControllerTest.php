@@ -3,9 +3,15 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use App\Models;
+//use GuzzleHttp\Psr7\UploadedFile;
+
+
 
 class ShowRoomsControllerTest extends TestCase
 {
@@ -36,5 +42,14 @@ class ShowRoomsControllerTest extends TestCase
                 ->assertViewIs('rooms.index')
                 ->assertViewHas('rooms')
                 ->assertSeeText($roomType->name);
+    }
+    public function testUpdateFile(){
+       //Storage::fake('pictures');
+        //$file = UploadedFile::fake()->image('sample.jpg');
+        $roomType = Models\RoomType::factory()->create();
+         $response = $this->put('/room_types/{$roomType->id}',['picture'=>UploadedFile::fake()->image('sample.jpg')]);
+        $response->assertStatus(302)
+                    ->assertRedirect('/room_types');
+        Storage::disk('public')->assertExists('sample.jpg');
     }
 }
